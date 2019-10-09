@@ -3,6 +3,8 @@ import numpy as np
 from matplotlib import pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
+from scipy import signal
+from scipy import misc
 
 testImg = cv2.imread('data/Test/hdpeN.jpg')
 img = cv2.cvtColor(testImg, cv2.COLOR_BGR2RGB)
@@ -18,8 +20,7 @@ for i in img:
 test = img[0][0][0]/3 + img[0][0][1]/3 + img[0][0][2]/3
 print('r : ', img[0][0][0]/3, ', g : ', img[0][0][1]/3, ', b : ', img[0][0][2]/3 )
 print(test)
-for i in rgb:
-    print(i, ' : ', rgb[i])
+
 
 
 
@@ -35,16 +36,39 @@ for i,col in enumerate(color):
 
 plt.subplot(223)
 plt.hist(rgb, bins = 50)
-
+# plt.savefig('result/Test/hdpeN.png')
 # ------------------------------------------------ Black White ---------------------------------------------------------
 plt.figure(2)
-plt.subplot(211)
+plt.subplot(221)
 grayImg = cv2.cvtColor(testImg, cv2.COLOR_BGR2GRAY)
 plt.imshow(grayImg, 'gray')
 
-plt.subplot(212)
-(thresh, bwImg) = cv2.threshold(grayImg, 127, 255, cv2.THRESH_BINARY)
-plt.imshow(bwImg)
+plt.subplot(222)
+
+#--------------------------------- Treshold --------------------------------
+# (thresh, bwImg) = cv2.threshold(grayImg, 127, 255, cv2.THRESH_BINARY)
+
+#--------------------------------- Edge ------------------------------------
+sobelX = np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]])
+sobelY = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]])
+
+# gradX = signal.convolve2d(grayImg, sobelX, mode='same')
+# gradY = signal.convolve2d(grayImg, sobelY, mode='same')
+# gradXY = np.sqrt(np.square(gradX) + np.square(gradY))
+
+# plt.imshow(np.absolute(gradXY), cmap='gray')
+
+# plt.subplot(223)
+# plt.imshow(np.absolute(gradX), cmap='gray')
+
+# plt.subplot(224)
+# plt.imshow(np.absolute(gradY), cmap='gray')
+# plt.imshow(bwImg)
 # plt.savefig('result/Test/plasticN.png')
+
+#------------------------------ Canny ---------------------------------
+edges = cv2.Canny(grayImg,100,200)
+plt.imshow(edges, cmap='gray')
+
 plt.show()
 
