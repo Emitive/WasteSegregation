@@ -36,7 +36,7 @@ for i,col in enumerate(color):
 
 plt.subplot(223)
 plt.hist(rgb, bins = 50)
-# plt.savefig('result/Test/hdpeN.png')
+plt.savefig('result/Test/hdpeN.png')
 # ------------------------------------------------ Black White ---------------------------------------------------------
 plt.figure(2)
 plt.subplot(221)
@@ -46,11 +46,11 @@ plt.imshow(grayImg, 'gray')
 plt.subplot(222)
 
 #--------------------------------- Treshold --------------------------------
-# (thresh, bwImg) = cv2.threshold(grayImg, 127, 255, cv2.THRESH_BINARY)
-
+(thresh, bwImg) = cv2.threshold(grayImg, 127, 255, cv2.THRESH_BINARY)
+plt.imshow(bwImg)
 #--------------------------------- Edge ------------------------------------
-sobelX = np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]])
-sobelY = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]])
+# sobelX = np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]])
+# sobelY = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]])
 
 # gradX = signal.convolve2d(grayImg, sobelX, mode='same')
 # gradY = signal.convolve2d(grayImg, sobelY, mode='same')
@@ -63,12 +63,12 @@ sobelY = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]])
 
 # plt.subplot(224)
 # plt.imshow(np.absolute(gradY), cmap='gray')
-# plt.imshow(bwImg)
+
 # plt.savefig('result/Test/plasticN.png')
 
 #------------------------------ Canny ---------------------------------
-edges = cv2.Canny(grayImg,100,200)
-plt.imshow(edges, cmap='gray')
+# edges = cv2.Canny(grayImg,100,200)
+# plt.imshow(edges, cmap='gray')
 
 plt.show()
 
