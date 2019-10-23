@@ -18,3 +18,25 @@ resnet50_coco_best_v2.0.1.h5
 DenseNet-BC-121-32.h5
 
 data/traffic.mp4
+
+data/Test/hdpe.jpg
+
+data/Test/hdpeN.jpg
+
+data/Test/pet.jpg
+
+data/Test/petN.jpg
+
+data/Test/plastic.jpg
+
+data/Test/plasticN.jpg
+
+result/Test/
+
+data/Test/
+
+Training model/
+
+data/
+
+result/
