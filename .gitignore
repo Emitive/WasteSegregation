@@ -7,6 +7,18 @@ yolo-tiny.h5
 
 .vscode/settings.json
 
+data/result/camera_detected_1.avi
+
+data/result/imagenew.jpg
+
+*.avi
+
+resnet50_coco_best_v2.0.1.h5
+
+DenseNet-BC-121-32.h5
+
+data/traffic.mp4
+
 data/Test/hdpe.jpg
 
 data/Test/hdpeN.jpg
@@ -24,3 +36,10 @@ result/Test/
 data/Test/
 
 Training model/
+<<<<<<< HEAD
+=======
+
+data/
+
+result/
+>>>>>>> Develop

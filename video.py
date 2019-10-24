@@ -47,8 +47,8 @@ def forSecond(frame_number, output_arrays, count_arrays, average_count, returned
 
 
 video_detector = VideoObjectDetection()
-video_detector.setModelTypeAsYOLOv3()
-video_detector.setModelPath(os.path.join(execution_path, "yolo.h5"))
+video_detector.setModelTypeAsRetinaNet()
+video_detector.setModelPath(os.path.join(execution_path, "resnet50_coco_best_v2.0.1.h5"))
 video_detector.loadModel()
 
 plt.show()
