@@ -6,9 +6,9 @@ from matplotlib.ticker import LinearLocator, FormatStrFormatter
 from scipy import signal
 from scipy import misc
 
-testImg = cv2.imread('data/Test/hdpeN.jpg')
+testImg = cv2.imread('data/Test/pet.jpg')
 img = cv2.cvtColor(testImg, cv2.COLOR_BGR2RGB)
-# img = cv2.resize(img, (128,128))
+img = cv2.resize(img, (600,800))
 
 # ---------------------------------------------------------- RGB --------------------------------------------------------------
 rgb = []
@@ -21,21 +21,18 @@ test = img[0][0][0]/3 + img[0][0][1]/3 + img[0][0][2]/3
 print('r : ', img[0][0][0]/3, ', g : ', img[0][0][1]/3, ', b : ', img[0][0][2]/3 )
 print(test)
 
-
-
-
 plt.figure(1)
-plt.subplot(221), plt.imshow(img)
+plt.subplot(121), plt.imshow(img)
 
-plt.subplot(222)
+plt.subplot(122)
 color = ('b','g','r')
 for i,col in enumerate(color):
     histr = cv2.calcHist([img],[i],None,[256],[0,256])
     plt.plot(histr,color = col)
     plt.xlim([0,256])
 
-plt.subplot(223)
-plt.hist(rgb, bins = 50)
+# plt.subplot(223)
+# plt.hist(rgb, bins = 50)
 plt.savefig('result/Test/hdpeN.png')
 # ------------------------------------------------ Black White ---------------------------------------------------------
 plt.figure(2)
