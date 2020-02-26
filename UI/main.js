@@ -36,7 +36,7 @@ function createAddWindow(){
   addWindow = new BrowserWindow({
     width: 300,
     height:200,
-    title:'Add Shopping List Item'
+    title:'Window name'
   });
   addWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'addWindow.html'),

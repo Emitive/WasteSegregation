@@ -4,7 +4,7 @@
   "description": "UI for Bottle segregation",
   "main": "main.js",
   "scripts": {
-    "test": "electron ."
+    "start": "electron ."
   },
   "author": "Pathorn Jaewtrakul",
   "license": "MIT",

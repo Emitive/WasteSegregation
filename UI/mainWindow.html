@@ -1,31 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <title>Add Shopping Item</title>
+  <title>ShoppingList</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
 </head>
 <body>
-  <div class="container">
-    <form>
-      <div>
-        <label>Enter Item</label>
-        <input type="text" id="item" autofocus>
-      </div>
-      <button class="waves-effect waves-light btn" type="submit">Add Item</button>
-    </form>
-  </div>
+  <nav>
+    <div class="nav-wrapper">
+      <a class="brand-logo center">Bottle Segregation</a>   
+    </div>
+  </nav>
+  <ul></ul>
 
   <script>
     const electron = require('electron');
     const {ipcRenderer} = electron;
+    const ul = document.querySelector('ul');
 
-    document.querySelector('form').addEventListener('submit', submitForm);
+    ipcRenderer.on('item:add', function(e, item){
+      ul.className = 'collection';
+      const li = document.createElement('li');
+      li.className = 'collection-item';
+      const itemText = document.createTextNode(item);
 
-    function submitForm(e){
-      e.preventDefault();
-      const item = document.querySelector('#item').value;
-      console.log(ipcRenderer);
-      ipcRenderer.send('item:add', item);
+      li.appendChild(itemText);
+      ul.appendChild(li);
+    });
+
+    ipcRenderer.on('item:clear', function(){
+      ul.className = '';
+      ul.innerHTML = '';
+    });
+
+    ul.addEventListener('dblclick', removeItem);
+
+    function removeItem(e){
+      event.target.remove();
+      if(ul.children.length == 0){
+        ul.className = '';
+      }
     }
   </script>
 </body>
