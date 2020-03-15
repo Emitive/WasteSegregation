@@ -1,96 +1,99 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>BottleSegregation</title>
-  <!--link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"-->
   <link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
   <link href="assets/plugins/morrisjs/morris.css" rel="stylesheet" />
 
   <link href="assets/css/main.css" rel="stylesheet">
   <link href="assets/css/themes/all-themes.css" rel="stylesheet" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!--style>
-  * {
-    box-sizing: border-box;
-  }
-  
-  /* Create two equal columns that floats next to each other */
-  .column {
-    float: left;
-    width: 50%;
-    padding: 10px;
-    /*height: 300px; /* Should be removed. Only for demonstration */
-  }
-  /* Clear floats after the columns */
-  .row:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
-  </style-->
 </head>
+
 <body class="theme-blue">
-<section class="">
-  <div class="block-header">
-    <div class="col-12"><h5 class="col-white">Bottle Segregation</h5></div>
-  </div>
-  
-  <div class="container-fluid">
-    <div class="row clearfix">
-      <div class="col-6 column">
-        <div class="card">
-          <div class="body">
-            <h4>Content 1</h4>
-
-          </div>
-        </div>
-      </div>
-      <div class="col-6 column">
-        <div class="card">
-          <div class="body">
-            <h4>Content 2</h4>
-          </div>
-
-        </div>
-
+  <section class="">
+    <div class="block-header">
+      <div class="col-12">
+        <h5 class="col-white">Bottle Segregation</h5>
       </div>
     </div>
 
-  </div>
-  
-</section>
+    <div class="container-fluid">
+      <div class="row clearfix">
+        <div class="col-6 column">
+          <div class="card">
+            <div class="body">
+              <h4>Content 1</h4>
+              <div id="my_camera"></div>
+              <form>
+                <input type=button value="Take Snapshot" onClick="take_snapshot()">
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 column">
+          <div class="card">
+            <div class="body">
+              <h4>Content 2</h4>
+              <div id="results">Your captured image will appear here...</div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </section>
 
 
-
-  <!--script>
-    const electron = require('electron');
-    const {ipcRenderer} = electron;
-    const ul = document.querySelector('ul');
-
-    ipcRenderer.on('item:add', function(e, item){
-      ul.className = 'collection';
-      const li = document.createElement('li');
-      li.className = 'collection-item';
-      const itemText = document.createTextNode(item);
-
-      li.appendChild(itemText);
-      ul.appendChild(li);
-    });
-
-    ipcRenderer.on('item:clear', function(){
-      ul.className = '';
-      ul.innerHTML = '';
-    });
-
-    ul.addEventListener('dblclick', removeItem);
-
-    function removeItem(e){
-      event.target.remove();
-      if(ul.children.length == 0){
-        ul.className = '';
-      }
+  <script type = "text/javascript">
+    function errorCallback(e) {
+       console.log('Error', e)
     }
-  </script -->
+
+    navigator.getUserMedia({video: true, audio: false}, (stream) => {
+       var video = document.querySelector('video')
+       try{
+         video.srcObject = stream;
+       } catch (error) {
+         video.src = window.URL.createObjectURL(stream);
+       }
+       //video.src = window.URL.createObjectURL(localMediaStream)
+       video.onloadedmetadata = (e) => {
+          // Ready to go. Do some stuff.
+       };
+    }, errorCallback)
+ </script>
+
+ 	<!-- First, include the Webcam.js JavaScript Library -->
+   <script type="text/javascript" src="D:\Work\Waste\Repo\WasteSegregation\UI\webcam.min.js"></script>
+	
+   <!-- Configure a few settings and attach camera -->
+   <script language="JavaScript">
+     Webcam.set({
+       width: 320,
+       height: 240,
+       image_format: 'jpeg',
+       jpeg_quality: 90
+     });
+     Webcam.attach( '#my_camera' );
+   </script>
+
+<script language="JavaScript">
+  function take_snapshot() {
+    // take snapshot and get image data
+    Webcam.snap( function(data_uri) {
+      // display results in page
+      document.getElementById('results').innerHTML = 
+        '<a>Here is your image:<a>' + 
+        '<img src="'+data_uri+'"/>';
+    } );
+  }
+</script>
+
 </body>
 </html>
+
