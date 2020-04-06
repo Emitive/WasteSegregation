@@ -1,6 +1,7 @@
 const electron = require('electron');
 const path = require('path');
 const url = require('url');
+const {PythonShell} = require('python-shell');
 
 // SET ENV
 process.env.NODE_ENV = 'development';
@@ -29,6 +30,25 @@ app.on('ready', function(){
   const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
   // Insert menu
   Menu.setApplicationMenu(mainMenu);
+
+  /*var python = require('child_process').spawn('python', ['./test.py', 'Test']);
+    python.stdout.on('data',function(data){
+        console.log("data: ",data.toString('utf8'));
+    });*/
+    //var PythonShell = require('python-shell');
+
+    var options = {
+      mode: 'text',
+      encoding: 'utf8',
+      pythonOptions: ['-u'],
+      args: ['hello world'],
+      pythonPath: 'C:\\Program Files\\Python37\\python.exe'
+    };
+
+    var test = new PythonShell('test.py', options);
+    test.on('message',function (message) {
+      console.log(message);
+    });
 });
 
 // Handle add item window

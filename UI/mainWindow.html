@@ -1,45 +1,204 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <title>ShoppingList</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+  <title>BottleSegregation</title>
+  <link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="assets/plugins/morrisjs/morris.css" rel="stylesheet" />
+
+  <link href="assets/css/main.css" rel="stylesheet">
+  <link href="assets/css/themes/all-themes.css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body>
-  <nav>
-    <div class="nav-wrapper">
-      <a class="brand-logo center">Bottle Segregation</a>   
+
+<body class="theme-blue">
+  <section class="">
+    <div class="block-header">
+      <div class="col-12">
+        <h5 class="col-white">Bottle Segregation</h5>
+      </div>
     </div>
-  </nav>
-  <ul></ul>
 
-  <script>
-    const electron = require('electron');
-    const {ipcRenderer} = electron;
-    const ul = document.querySelector('ul');
+    <div class="container-fluid">
+      <div class="row clearfix">
+        <div class="col-6 column">
+          <div class="card">
+            <div class="body">
+              <h4>Content 1</h4>
+              <div id="my_camera"></div>
+              <form>
+                <input type=button value="Take Snapshot" onClick="take_snapshot()">
+                <!--input type="button" id="savefile" value="Save photo in Desktop"/-->
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 column">
+          <div class="card">
+            <div class="body">
+              <h4>Content 2</h4>
+              <div id="results">Your captured image will appear here...</div>
+            </div>
 
-    ipcRenderer.on('item:add', function(e, item){
-      ul.className = 'collection';
-      const li = document.createElement('li');
-      li.className = 'collection-item';
-      const itemText = document.createTextNode(item);
+          </div>
 
-      li.appendChild(itemText);
-      ul.appendChild(li);
-    });
+        </div>
+      </div>
 
-    ipcRenderer.on('item:clear', function(){
-      ul.className = '';
-      ul.innerHTML = '';
-    });
+    </div>
 
-    ul.addEventListener('dblclick', removeItem);
+  </section>
 
-    function removeItem(e){
-      event.target.remove();
-      if(ul.children.length == 0){
-        ul.className = '';
-      }
+
+  <!--script type = "text/javascript">
+    function errorCallback(e) {
+       console.log('Error', e)
     }
-  </script>
+
+    navigator.getUserMedia({video: true, audio: false}, (stream) => {
+       var video = document.querySelector('video')
+       try{
+         video.srcObject = stream;
+       } catch (error) {
+         video.src = window.URL.createObjectURL(stream);
+       }
+       //video.src = window.URL.createObjectURL(localMediaStream)
+       video.onloadedmetadata = (e) => {
+          // Ready to go. Do some stuff.
+       };
+    }, errorCallback)
+ </script-->
+
+ 	<!-- First, include the Webcam.js JavaScript Library -->
+   <script type="text/javascript" src="D:\Work\Waste\Repo\WasteSegregation\UI\webcam.min.js"></script>
+	
+   <!-- Configure a few settings and attach camera -->
+   <script language="JavaScript">
+     Webcam.set({
+       width: 320,
+       height: 240,
+       image_format: 'jpeg',
+       jpeg_quality: 90
+     });
+     Webcam.attach( '#my_camera' );
+   </script>
+
+<script language="JavaScript">
+  function take_snapshot() {
+    // take snapshot and get image data
+    Webcam.snap( function(data_uri) {
+      // display results in page
+      document.getElementById('results').innerHTML = 
+        '<img src="'+data_uri+'"/>';
+        
+      } );
+      send_py();
+  }
+</script>
+
+<!--script src="shell.js"></script-->
+
+<!--script language="JavaScript">
+function UploadPic(data_uri) {
+
+//Converte a imagem em base64
+var Pic = document.getElementById("canvas2").toDataURL("image/jpg");
+Pic = Pic.replace(/^data:image\/(png|jpg);base64,/, "")
+
+//Envia a imagem em base64 para o server (pasta local)
+$.ajax({
+    type: 'POST',
+    url: 'Save_Picture.aspx/UploadPic',
+    data: '{ "imageData" : "' + Pic + '" }',
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json',
+    success: function (msg) {
+        alert("Done, Picture Uploaded.");
+    }
+});
+}
+</script-->
+
+<!--script language="JavaScript">
+  var enabled = false;
+  var WebCamera = require("webcamjs");
+  var remote = require('remote'); // Load remote component that contains the dialog dependency
+  var dialog = remote.require('dialog'); // Load the dialogs component of the OS
+  var fs = require('fs'); // Load the File System to execute our common tasks (CRUD)
+
+  document.getElementById("start").addEventListener('click',function(){
+      if(!enabled){
+          enabled = true;
+          WebCamera.attach('#camdemo');
+          console.log("The camera has been started");
+      }else{
+          enabled = false;
+          WebCamera.reset();
+          console.log("The camera has been disabled");
+      }
+  },false);
+
+  function processBase64Image(dataString) {
+    var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),response = {};
+
+    if (matches.length !== 3) {
+        return new Error('Invalid input string');
+    }
+
+    response.type = matches[1];
+    response.data = new Buffer(matches[2], 'base64');
+
+    return response;
+  }
+
+  document.getElementById("savefile").addEventListener('click',function(){
+      if(enabled){
+          WebCamera.snap(function(data_uri) {
+              var imageBuffer = processBase64Image(data_uri);
+
+              dialog.showSaveDialog({
+                  filters: [
+                      { name: 'Images', extensions: ['png'] },
+                  ]
+              },function (fileName) {
+                     if (fileName === undefined){
+                          console.log("You didn't save the file because you exit or didn't give a name");
+                          return;
+                     }
+                     // If the user gave a name to the file, then save it !
+                     fs.writeFile(fileName, imageBuffer.data, function(err) {
+                         if(err){
+                             console.log("Cannot save the file :'( time to cry !");
+                         }else{
+                             alert("Image saved succesfully");
+                         }
+                     });
+              });
+    });
+      }else{
+          console.log("Please enable the camera first to take the snapshot !");
+      }
+  },false);
+</script-->
+
+<!--script>
+  const pythonProcess = spawn('python',["script.py"]);
+
+pythonProcess.stdin.write(data);
+pythonProcess.stdin.end();
+pythonProcess.stdout.on('data', (result) => {
+    handleResult(result);
+});
+</script-->
+<!--script>
+//var pyshell =  require('python-shell');
+
+pyshell.run('hello.py',  function  (err, results)  {
+ if  (err)  throw err;
+ console.log('hello.py finished.');
+ console.log('results', results);
+});
+</script-->
 </body>
 </html>
+
